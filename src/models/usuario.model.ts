@@ -38,7 +38,7 @@ const UsuarioSchema = new Schema({
 });
 
 // Creación del modelo UsuarioModel utilizando el método model de Mongoose
-const UsuarioModel: Model<any> = model("user", UsuarioSchema);
+const UsuarioModel: Model<any> = model("users", UsuarioSchema);
 
 // Exportación del modelo UsuarioModel para que esté disponible en otros archivos
 export default UsuarioModel;
