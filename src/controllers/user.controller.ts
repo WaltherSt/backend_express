@@ -32,3 +32,84 @@ export const createUser = async (req: Request, res: Response) => {
 		});
 	}
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+	try {
+		const users = await UsuarioModel.find();
+		res.status(200).json({
+			ok: true,
+			msg: "Lista de usuarios",
+			users,
+		});
+	} catch (error) {
+		res.status(400).json({
+			ok: false,
+			msg: "Error al consultar los usuarios",
+		});
+	}
+};
+
+export const getById = async (req: Request, res: Response) => {
+	try {
+		const id = req.params.id;
+		const user = await UsuarioModel.findById({ _id: id });
+
+		res.status(200).json({
+			ok: true,
+			msg: "usuario",
+			user,
+		});
+	} catch (error) {
+		res.status(400).json({
+			ok: false,
+			msg: "Usuario no encontrado",
+			error,
+		});
+	}
+};
+
+export const deleteById = async (req: Request, res: Response) => {
+	try {
+		const id = req.params.id;
+
+		const user = await UsuarioModel.findByIdAndDelete({
+			_id: id,
+		});
+
+		res.status(200).json({
+			ok: 200,
+			msg: "usuaio eliminado",
+			user,
+		});
+	} catch (error) {
+		res.status(400).json({
+			ok: false,
+			msg: "Error al eliminar usuario",
+			error,
+		});
+	}
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+	try {
+		const id = req.params.id;
+		const user = req.body;
+
+		const userUpdated = await UsuarioModel.findByIdAndUpdate(
+			id,
+			user,
+			{
+				new: true,
+			}
+		);
+		res.status(200).json({
+			ok: true,
+			userUpdated,
+		});
+	} catch (error) {
+		res.status(400).json({
+			ok: false,
+			msg: "Error al actualizar",
+		});
+	}
+};

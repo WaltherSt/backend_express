@@ -2,16 +2,18 @@
 import cors from "cors"; // Middleware para manejar solicitudes CORS
 import express, { Application, Request, Response } from "express"; // Framework web para Node.js
 import { db_connection } from "./database/connection"; // Función para establecer la conexión a la base de datos
-import router from "./routes/user.route";
+import routerProduct from "./routes/product.route"; // Importa el enrutador para las rutas de productos
+import router from "./routes/user.route"; // Importa el enrutador para las rutas de usuarios
 
 // Definición de la clase Server
 class Server {
 	private app: Application; // Instancia de Express para la aplicación
 	private port: string; // Puerto en el que se ejecutará el servidor
 
-	// Objeto para almacenar las rutas de la API (actualmente vacío)
+	// Objeto para almacenar las rutas de la API
 	private apiPaths = {
 		user: "/api/v1/user",
+		product: "/api/v1/product",
 	};
 
 	// Constructor de la clase Server
@@ -22,7 +24,7 @@ class Server {
 
 		this.middlewares(); // Configuración de los middlewares de la aplicación
 
-		this.routes();
+		this.routes(); // Configuración de las rutas de la aplicación
 	}
 
 	// Método para definir la primera ruta de la API
@@ -39,8 +41,10 @@ class Server {
 		this.miPrimerApi(); // Llamada al método para definir la ruta de la API
 	}
 
+	// Método para configurar las rutas de la aplicación
 	routes(): void {
-		this.app.use(this.apiPaths.user, router);
+		this.app.use(this.apiPaths.user, router); // Establece las rutas de usuario usando el enrutador de usuarios
+		this.app.use(this.apiPaths.product, routerProduct); // Establece las rutas de productos usando el enrutador de productos
 	}
 
 	// Método para iniciar el servidor
