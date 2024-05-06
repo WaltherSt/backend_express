@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { check } from "express-validator";
 import {
 	createUser,
 	deleteById,
@@ -6,12 +7,30 @@ import {
 	getUsers,
 	updateUser,
 } from "../controllers/user.controller";
+import { validateFields } from "../middlewares/validate_fields";
 
 //path /api/v1/user
 
 const router = Router();
 
-router.post("/", createUser);
+router.post(
+	"/",
+	[
+		check("name", "el nombre es obligatorio").not().isEmpty(),
+		check("email", "El correo debe ser unico")
+			.not()
+			.isEmpty()
+			.isEmail(),
+		check(
+			"documentType",
+			"El numero de documento es obligatorio"
+		)
+			.not()
+			.isEmpty(),
+		validateFields,
+	],
+	createUser
+);
 router.get("/", getUsers);
 router.get("/:id", getById);
 router.delete("/:id", deleteById);

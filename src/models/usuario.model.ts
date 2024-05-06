@@ -31,6 +31,10 @@ const UsuarioSchema = new Schema({
 	Birthdate: {
 		type: Date, // Tipo fecha (opcional)
 	},
+	password: {
+		type: String,
+	},
+	rol: { type: String, default: "USER" },
 	createdAt: {
 		type: Date,
 		default: Date.now(), // Valor por defecto: fecha y hora actual

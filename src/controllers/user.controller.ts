@@ -1,4 +1,5 @@
 // Importación de los tipos Request y Response de Express para el manejo de solicitudes HTTP
+import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 
 // Importación del modelo UsuarioModel desde el archivo usuario.model ubicado en la carpeta models
@@ -8,11 +9,29 @@ import UsuarioModel from "../models/usuario.model";
 export const createUser = async (req: Request, res: Response) => {
 	const { body } = req; // Extracción del cuerpo de la solicitud HTTP
 
+	const { email, password } = body;
+
 	try {
+		const existEmail = await UsuarioModel.findOne({
+			email: email,
+		});
+
+		if (existEmail) {
+			res.status(409).json({
+				ok: false,
+				msg: `Ya existe el email ${email}`,
+			});
+		}
+
 		// Creación de un nuevo objeto de usuario utilizando el modelo UsuarioModel y los datos del cuerpo de la solicitud
 		const newUser = new UsuarioModel({
 			...body,
 		});
+
+		// encriptar contraseña
+
+		const salt = bcrypt.genSaltSync(10);
+		newUser.password = bcrypt.hashSync(password, salt);
 
 		// Guardar el nuevo usuario en la base de datos
 		const user = await newUser.save();
