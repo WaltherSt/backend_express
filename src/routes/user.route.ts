@@ -8,6 +8,7 @@ import {
 	updateUser,
 } from "../controllers/user.controller";
 import { validateFields } from "../middlewares/validate_fields";
+import { validateJWT } from "../middlewares/validate_jwt";
 
 //path /api/v1/user
 
@@ -31,7 +32,7 @@ router.post(
 	],
 	createUser
 );
-router.get("/", getUsers);
+router.get("/", validateJWT, getUsers);
 router.get("/:id", getById);
 router.delete("/:id", deleteById);
 router.put("/:id", updateUser);

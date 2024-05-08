@@ -2,6 +2,7 @@
 import cors from "cors"; // Middleware para manejar solicitudes CORS
 import express, { Application, Request, Response } from "express"; // Framework web para Node.js
 import { db_connection } from "./database/connection"; // Función para establecer la conexión a la base de datos
+import authRouter from "./routes/login.route";
 import routerProduct from "./routes/product.route"; // Importa el enrutador para las rutas de productos
 import router from "./routes/user.route"; // Importa el enrutador para las rutas de usuarios
 
@@ -14,6 +15,7 @@ class Server {
 	private apiPaths = {
 		user: "/api/v1/user",
 		product: "/api/v1/product",
+		login: "/api/v1/login",
 	};
 
 	// Constructor de la clase Server
@@ -45,6 +47,7 @@ class Server {
 	routes(): void {
 		this.app.use(this.apiPaths.user, router); // Establece las rutas de usuario usando el enrutador de usuarios
 		this.app.use(this.apiPaths.product, routerProduct); // Establece las rutas de productos usando el enrutador de productos
+		this.app.use(this.apiPaths.login, authRouter);
 	}
 
 	// Método para iniciar el servidor
