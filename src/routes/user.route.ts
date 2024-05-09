@@ -33,8 +33,8 @@ router.post(
 	createUser
 );
 router.get("/", validateJWT, getUsers);
-router.get("/:id", getById);
-router.delete("/:id", deleteById);
-router.put("/:id", updateUser);
+router.get("/:id", validateJWT, getById);
+router.delete("/:id", validateJWT, deleteById);
+router.put("/:id", validateJWT, updateUser);
 
 export default router;

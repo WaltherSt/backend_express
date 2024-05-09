@@ -8,10 +8,11 @@ import {
 	updateProduct,
 } from "../controllers/product.controller";
 import { validateFields } from "../middlewares/validate_fields";
+import { validateJWT } from "../middlewares/validate_jwt";
 
 const routerProduct = Router();
 
-routerProduct.post("/", [
+routerProduct.post("/", validateJWT, [
 	check("name", "el nombre del prodecto es obligatorio")
 		.not()
 		.isEmpty(),

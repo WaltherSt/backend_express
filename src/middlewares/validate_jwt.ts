@@ -20,7 +20,8 @@ export const validateJWT = (
 	}
 
 	try {
-		const { _id } = jwt.verify(token, process.env.JWTSECRET);
+		const secret = process.env.JWTSECRET;
+		const { _id } = jwt.verify(token, secret);
 		req._id = _id;
 		next();
 	} catch (error) {
