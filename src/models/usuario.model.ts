@@ -35,6 +35,8 @@ const UsuarioSchema = new Schema({
 		type: String,
 	},
 	rol: { type: String, default: "USER" },
+	token: { type: String, require: false },
+
 	createdAt: {
 		type: Date,
 		default: Date.now(), // Valor por defecto: fecha y hora actual

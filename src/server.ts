@@ -2,7 +2,7 @@
 import cors from "cors"; // Middleware para manejar solicitudes CORS
 import express, { Application, Request, Response } from "express"; // Framework web para Node.js
 import { db_connection } from "./database/connection"; // Función para establecer la conexión a la base de datos
-import authRouter from "./routes/login.route";
+import authRouter from "./routes/auth.route";
 import routerProduct from "./routes/product.route"; // Importa el enrutador para las rutas de productos
 import router from "./routes/user.route"; // Importa el enrutador para las rutas de usuarios
 

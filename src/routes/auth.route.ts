@@ -3,12 +3,12 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import {
+	auth,
 	cambioContrasena,
-	login,
 	olvido_de_contrasena,
 } from "../controllers/auth.controller";
 import { validateFields } from "../middlewares/validate_fields";
-import { validateJWT } from "../middlewares/validate_jwt";
+import { validateJWTPass } from "../middlewares/validate_jwt";
 
 const authRouter = Router();
 
@@ -22,7 +22,7 @@ authRouter.post(
 
 		validateFields,
 	],
-	login
+	auth
 );
 
 authRouter.post(
@@ -45,8 +45,14 @@ authRouter.post(
 
 authRouter.put(
 	"/cambiocontrasena",
-	validateJWT,
-	[check("password", "la contraseña es obligatoria").not().isEmpty()],
+	validateJWTPass,
+	[
+		check("password", "la contraseña es obligatoria")
+			.not()
+			.isEmpty(),
+		validateFields,
+	],
+
 	cambioContrasena
 );
 

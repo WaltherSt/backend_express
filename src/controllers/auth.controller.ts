@@ -5,7 +5,7 @@ import generateJWT from "../helpers/jwt";
 import { CustomRequest } from "../middlewares/validate_jwt";
 import UsuarioModel from "../models/usuario.model";
 
-export const login = async (req: Request, res: Response) => {
+export const auth = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 
 	try {
@@ -71,7 +71,7 @@ export const olvido_de_contrasena = async (req: Request, res: Response) => {
 				id,
 				email,
 				"1h",
-				process.env.JWT_SECRET
+				process.env.JWT_SECRET_PASS
 			);
 
 			res.status(200).json({
@@ -95,20 +95,23 @@ export const cambioContrasena = async (req: CustomRequest, res: Response) => {
 	const { password } = req.body;
 
 	try {
-		if (password) {
+		if (!password) {
 			res.status(400).json({
 				ok: false,
-				msg: "Por favor digite una contraseña valida",
+				msg: "Por favor digite una contraseña válida",
 			});
 		}
 
 		const newPassword = bcrypt.hashSync(password, 10);
 
 		const actualizarPassword =
-			await UsuarioModel.findByIdAndUpdate({
-				_id: id,
-				password: newPassword,
-			});
+			await UsuarioModel.findByIdAndUpdate(
+				id,
+				{
+					password: newPassword,
+				},
+				{ new: true }
+			);
 
 		if (!actualizarPassword) {
 			res.status(400).json({
